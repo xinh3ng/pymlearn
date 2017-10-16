@@ -22,6 +22,9 @@ class BaseClassifierRegressor(object):
     def set_feature_cols(self, feature_cols):
         self.feature_cols = feature_cols
 
+    def process_data(self, data):
+        return data
+
     def fit(self, data):
       raise NotImplementedError("Not implemented")
 
@@ -30,9 +33,6 @@ class BaseClassifierRegressor(object):
 
     def summary(self):
         return None
-
-    def process_data(self, data):
-        return data
 
 
 class EnsembleClassifierRegressor(object):

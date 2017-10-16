@@ -5,11 +5,11 @@ from pdb import set_trace as debug
 import copy
 import numpy as np
 import pandas as pd
+from pymlearn.metrics import clf_perf_scores
 
 
 def train_validate(estimator, train_data, val_data,
-                   perf_score_fn=gen_perf_scores, verbose=False):
-    # Fit the model and
+                   perf_score_fn=clf_perf_scores, verbose=False):
     estimator = copy.deepcopy(estimator)  # NB xheng: must do this because estimator is mutable
     estimator.fit(train_data, verbose=verbose)
     y_pred = estimator.predict(val_data)
@@ -17,14 +17,13 @@ def train_validate(estimator, train_data, val_data,
 
     y = pd.DataFrame.from_dict({
         "true": y_true,
-        "pred_cat": y_pred["cat"]
+        "pred_cat": y_pred["cat"].values
     })
-
     perf_row = perf_score_fn(y["true"], y["pred_cat"])
     return perf_row
 
 
-def cross_validate(estimator, data, cv_splitter, perf_score_fn=gen_perf_scores, verbose=False):
+def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, verbose=False):
     """Cross validate
     
     :param estimator:

@@ -4,9 +4,13 @@
 from pdb import set_trace as debug
 import copy
 import pandas as pd
+from pymlearn.cv_utils import TimeSeriesSplitter
 
 
-def ts_cross_validate(estimator, data, cv_splitter, perf_score_fn, verbose=False):
+def ts_cross_validate(estimator, data,
+                      cv_splitter=TimeSeriesSplitter,
+                      perf_score_fn=lambda x: 1,
+                      verbose=False):
     """Cross validate for time series models
 
     :param estimator: The classification or regression model
@@ -27,13 +31,13 @@ def ts_cross_validate(estimator, data, cv_splitter, perf_score_fn, verbose=False
         y_true = val_data[estimator.get_label_col()]
 
         y = pd.concat([y, pd.DataFrame.from_dict({
-            "n_ahead": 1 + range(len(val_data))
+            "n_ahead": 1 + range(len(val_data)),
             "true": y_true,
             "pred_num": y_pred["num"]})
                        ])
 
     performance = pd.DataFrame()
     for y in y.groupby("n_ahead"):
-        performance = pd.concat([performance, perf_score_fn(y["true"], y["pred_num"])0)
+        performance = pd.concat([performance, perf_score_fn(y["true"], y["pred_num"])])
 
     return performance
