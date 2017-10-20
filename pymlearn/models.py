@@ -71,7 +71,6 @@ class EnsembleRegressor(EnsembleClassifierRegressor):
         for estimator in self.estimators:
             pred = pd.concat(pred[estimator.predict(data)["pred_num"]], axis=1)
         # Tale avg across rows
-        debug()
         self.avg_fn
 
 
@@ -88,5 +87,4 @@ class EnsembleClassifier(EnsembleClassifierRegressor):
         for estimator in self.estimators:
             pred = pd.concat(pred[estimator.predict(data)["pred_num"]], axis=1)
         # Tale avg across rows
-        debug()
         self.avg_fn

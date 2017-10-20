@@ -1,10 +1,11 @@
-"""ML related data util functions
+"""ML related util functions
 
 """
 from pdb import set_trace as debug
 import copy
 import numpy as np
 import pandas as pd
+from sklearn.metrics import classification_report, confusion_matrix
 from pymlearn.metrics import clf_perf_scores
 
 
@@ -17,10 +18,16 @@ def train_validate(estimator, train_data, val_data,
 
     y = pd.DataFrame.from_dict({
         "true": y_true,
-        "pred_cat": y_pred["cat"].values
+        "pred_cat": y_pred["pred_cat"].values
     })
     perf_row = perf_score_fn(y["true"], y["pred_cat"])
-    return perf_row
+
+    if verbose:
+        print("Report of out-of-sample performance")
+        print(confusion_matrix(y["true"], y["pred_cat"]))
+        print(classification_report(y["true"], y["pred_cat"]))
+
+    return y, perf_row
 
 
 def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, verbose=False):
@@ -38,7 +45,7 @@ def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, 
         assert len(train_data) >= 3 * len(val_data)
 
         # 1 row of performance scores
-        perf_row = train_validate(estimator, train_data, val_data,
+        _, perf_row = train_validate(estimator, train_data, val_data,
                                   perf_score_fn=perf_score_fn,
                                   verbose=verbose)
         performance = pd.concat([performance, perf_row])
