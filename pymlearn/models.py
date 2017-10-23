@@ -22,6 +22,9 @@ class BaseClassifierRegressor(object):
     def set_feature_cols(self, feature_cols):
         self.feature_cols = feature_cols
 
+    def get_model_params(self):
+        return self.model_params()
+
     def process_data(self, data):
         return data
 
