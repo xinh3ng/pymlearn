@@ -20,8 +20,8 @@ def split_train_validate(data, train_size=0.8, shuffle=False, seed=None):
         train_data = data.loc[train_idx].reset_index(drop=True)
         val_data = data.loc[val_idx].reset_index(drop=True)
 
-    return({"train": train_data,
-            "validate": val_data})
+    return({'train': train_data,
+            'validate': val_data})
 
 
 def down_sample(data, label_col, pos_size=0.5, seed=None):
@@ -58,7 +58,7 @@ def up_sample_naive(data, label_col, pos_size = 0.5, seed=None):
 
     pos_length = pos_size / (1.0 - pos_size) * neg_length
     pos_data = data[data[label_col] == 1].copy()  # positive samples
-    assert pos_length >= len(pos_data), "Required positive sample length cannot be smaller than the current"
+    assert pos_length >= len(pos_data), 'Required positive sample length cannot be smaller than the current'
 
     pos_data_new = pos_data.sample(n=pos_length - len(pos_data), replace=True)
     data = pd.concat([data, pos_data_new]).sample(frac=1, replace=False).reset_index()
