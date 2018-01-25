@@ -57,12 +57,12 @@ def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, 
     for metric in performance.columns:
         mean_perf[metric] = np.mean(performance[metric])
 
-    sd_perf = pd.DataFrame([{"average": "sd"}])
+    se_perf = pd.DataFrame([{"average": "se"}])
     for metric in performance.columns:
-        sd_perf[metric] = np.std(performance[metric])
+        se_perf[metric] = np.std(performance[metric]) / np.sqrt(len(performance[metric]))
 
     if verbose:
-        perf = pd.concat([mean_perf, sd_perf]).reset_index(drop=True)
+        perf = pd.concat([mean_perf, se_perf]).reset_index(drop=True)
         print("cross_validate(), performance report: \n%s" % perf.to_string(line_width=144))
 
-    return mean_perf, sd_perf
+    return mean_perf, se_perf
