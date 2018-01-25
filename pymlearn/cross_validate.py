@@ -6,7 +6,11 @@ import copy
 import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
+from pydsutils.generic import create_logger
+
 from pymlearn.metrics import clf_perf_scores
+
+logger = create_logger(__name__)
 
 
 def train_validate(estimator, train_data, val_data,
@@ -17,15 +21,15 @@ def train_validate(estimator, train_data, val_data,
     y_true = val_data[estimator.get_label_col()]
 
     y = pd.DataFrame.from_dict({
-        "true": y_true,
-        "pred_cat": y_pred["pred_cat"].values
+        'true': y_true,
+        'pred_cat': y_pred['pred_cat'].values
     })
-    perf_row = perf_score_fn(y["true"], y["pred_cat"])
+    perf_row = perf_score_fn(y['true'], y['pred_cat'])
 
     if verbose:
-        print("Report of out-of-sample performance")
-        print(confusion_matrix(y["true"], y["pred_cat"]))
-        print(classification_report(y["true"], y["pred_cat"]))
+        logger.info('Report of out-of-sample performance')
+        logger.info(confusion_matrix(y['true'], y['pred_cat']))
+        logger.info(classification_report(y['true'], y['pred_cat']))
 
     return y, perf_row
 
@@ -50,19 +54,19 @@ def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, 
                                   verbose=verbose)
         performance = pd.concat([performance, perf_row])
         if verbose:
-            print("Completed fold: %s" % fold)
+            logger.info('Completed fold: %s' % fold)
         fold += 1
 
-    mean_perf = pd.DataFrame([{"average": "mean"}])
+    mean_perf = pd.DataFrame([{'average': 'mean'}])
     for metric in performance.columns:
         mean_perf[metric] = np.mean(performance[metric])
 
-    sd_perf = pd.DataFrame([{"average": "sd"}])
+    sd_perf = pd.DataFrame([{'average': 'sd'}])
     for metric in performance.columns:
         sd_perf[metric] = np.std(performance[metric])
 
     if verbose:
         perf = pd.concat([mean_perf, sd_perf]).reset_index(drop=True)
-        print("cross_validate(), performance report: \n%s" % perf.to_string(line_width=144))
+        logger.info('cross_validate(), performance report: \n%s' % perf.to_string(line_width=144))
 
     return mean_perf, sd_perf

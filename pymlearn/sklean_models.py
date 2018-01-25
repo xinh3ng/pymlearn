@@ -29,10 +29,10 @@ class BaseClassifierRegressor(object):
         return data
 
     def fit(self, data):
-      raise NotImplementedError("Not implemented")
+      raise NotImplementedError('Not implemented')
 
     def predict(self, data):
-        raise NotImplementedError("Not implemented")
+        raise NotImplementedError('Not implemented')
 
     def summary(self):
         return None
@@ -72,7 +72,7 @@ class EnsembleRegressor(EnsembleClassifierRegressor):
     def predict(self, data):
         pred = pd.DataFrame()
         for estimator in self.estimators:
-            pred = pd.concat(pred[estimator.predict(data)["pred_num"]], axis=1)
+            pred = pd.concat(pred[estimator.predict(data)['pred_num']], axis=1)
         # Tale avg across rows
         self.avg_fn
 
@@ -88,6 +88,6 @@ class EnsembleClassifier(EnsembleClassifierRegressor):
     def predict(self, data):
         pred = pd.DataFrame()
         for estimator in self.estimators:
-            pred = pd.concat(pred[estimator.predict(data)["pred_num"]], axis=1)
+            pred = pd.concat(pred[estimator.predict(data)['pred_num']], axis=1)
         # Tale avg across rows
         self.avg_fn

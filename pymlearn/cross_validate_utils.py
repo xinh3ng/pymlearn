@@ -22,7 +22,7 @@ class TimeSeriesSplitter(object):
         """
         data.reset_index(drop=True, inplace=True)
         length = len(data)
-        assert length >= self.train_size + self.n_ahead, "Data size is too small"
+        assert length >= self.train_size + self.n_ahead, 'Data size is too small'
 
         for idx in range(self.train_size, length - self.n_ahead + 1):
             train_rows = range(idx - self.train_size, idx)
