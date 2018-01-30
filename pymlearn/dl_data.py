@@ -2,14 +2,12 @@
 """
 """
 from pdb import set_trace as debug
-import numpy as np
-from typing import Type
 from pydsutils.generic import create_logger
 
 logger = create_logger(__name__)
 
 
-class ModelDataValidator(object):
+class BaseModelDataValidator(object):
     """Validator of Model Data
 
     """
@@ -33,7 +31,7 @@ class ModelDataValidator(object):
                 'reasons': reasons}
 
 
-class TfModelDataValidator(ModelDataValidator):
+class TfModelDataValidator(BaseModelDataValidator):
     def __init__(self, num_classes, num_rows, num_columns, num_channels):
         """
 
@@ -54,14 +52,14 @@ class TfModelDataValidator(ModelDataValidator):
             is_valid = False
             reasons.append('input X[1:] shape does not match requirements')
 
-        if (X.max() != 1) or (X.min() != 0):
-            is_valid = False
-            reasons.append('X is not scaled to [0, 1]')
+        #if (X.max() != 1) or (X.min() != 0):
+        #    is_valid = False
+        #    reasons.append('X is not scaled to [0, 1]')
         return {'is_valid': is_valid,
                 'reasons': reasons}
 
 
-class TorchModelDataValidator(ModelDataValidator):
+class TorchModelDataValidator(BaseModelDataValidator):
     def __init__(self, num_classes, num_rows, num_columns, num_channels):
         """
 
