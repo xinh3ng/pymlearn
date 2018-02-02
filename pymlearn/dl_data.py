@@ -1,5 +1,4 @@
-﻿﻿# -*- coding: utf-8 -*-﻿
-"""
+﻿"""
 """
 from pdb import set_trace as debug
 from pydsutils.generic import create_logger
@@ -52,9 +51,6 @@ class TfModelDataValidator(BaseModelDataValidator):
             is_valid = False
             reasons.append('input X[1:] shape does not match requirements')
 
-        #if (X.max() != 1) or (X.min() != 0):
-        #    is_valid = False
-        #    reasons.append('X is not scaled to [0, 1]')
         return {'is_valid': is_valid,
                 'reasons': reasons}
 
