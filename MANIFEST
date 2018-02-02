@@ -3,8 +3,9 @@ setup.cfg
 setup.py
 pymlearn/__init__.py
 pymlearn/cross_validate.py
-pymlearn/cv_utils.py
+pymlearn/cross_validate_ts.py
+pymlearn/cross_validate_utils.py
+pymlearn/dl_data.py
 pymlearn/metrics.py
-pymlearn/models.py
 pymlearn/sampling.py
-pymlearn/ts_cross_validate.py
+pymlearn/sklean_models.py
