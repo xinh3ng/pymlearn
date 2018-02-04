@@ -26,3 +26,6 @@ venv/
 __pycache__
 .*.swp
 .*.swo
+
+# 
+pymlearn.egg-info/

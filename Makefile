@@ -11,6 +11,8 @@ clean-build:
 	rm -rf dist/
 	rm -rf *.egg-info
 
+clean: clean-pyc clean-build
+
 isort:
 	sh -c "isort --skip-glob=.tox --recursive . "
 

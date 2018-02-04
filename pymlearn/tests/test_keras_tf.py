@@ -8,7 +8,7 @@ import numpy as np
 class ParallelImage2ArrayTest(unittest.TestCase):
     
     def test_shape_is_preserved(self):
-        """Test if the numpy array shape is perserved during parallel processing
+        """Test if the numpy array shape is preserved during parallel processing
         
         This usage is similar to my usage in image to array conversion
         """
