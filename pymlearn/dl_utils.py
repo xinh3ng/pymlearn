@@ -38,4 +38,3 @@ class TfMemoryUsage(Callback):
     def on_batch_end(self, batch, logs={}):
         if self.show_batch_end:
             self._get_mem_usage(pattern='on_batch_end')
-
