@@ -2,7 +2,7 @@
 """Unit tests on DL util functions
 """
 import unittest
-from dl_utils import TfMemoryUsage
+from pymlearn.dl_utils import TfMemoryUsage
         
 class TfMemoryUsageTest(unittest.TestCase):
     
