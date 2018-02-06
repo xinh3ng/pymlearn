@@ -1,4 +1,4 @@
-"""ML related util functions
+"""Time series sampling functions
 
 """
 from pdb import set_trace as debug
@@ -6,11 +6,31 @@ import copy
 import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
+from sklearn.model_selection import KFold
+from pymlearn.metrics import clf_perf_scores
 from pydsutils.generic import create_logger
 
-from pymlearn.metrics import clf_perf_scores
+logger = create_logger(__name__, 'info')
 
-logger = create_logger(__name__)
+##############################################################
+# Splitter's output must be a pair of train and validation sets
+###############################################################
+
+class CVSplitter(object):
+    def __init__(self, folds, shuffle=False):
+        self.folds = folds
+        self.shuffle = shuffle
+
+    def split(self, data):
+        """Split the data into a series of train and validate sets
+
+        :param data: Data to be split on
+        :return:
+        """
+        kf = KFold(n_splits=self.folds, shuffle=self.shuffle)
+        for train_idx, val_idx in  kf.split(data):
+            yield data.loc[train_idx].reset_index(drop=True),\
+                  data.loc[val_idx].reset_index(drop=True)
 
 
 def train_validate(estimator, train_data, val_data,
@@ -36,7 +56,7 @@ def train_validate(estimator, train_data, val_data,
 
 def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, verbose=False):
     """Cross validate
-    
+
     :param estimator:
     :param data:
     :param cv_folds:
@@ -50,8 +70,8 @@ def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, 
 
         # 1 row of performance scores
         _, perf_row = train_validate(estimator, train_data, val_data,
-                                  perf_score_fn=perf_score_fn,
-                                  verbose=verbose)
+                                     perf_score_fn=perf_score_fn,
+                                     verbose=verbose)
         performance = pd.concat([performance, perf_row])
         if verbose:
             logger.info('Completed fold: %s' % fold)
