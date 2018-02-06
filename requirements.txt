@@ -2,7 +2,7 @@ numpy
 scipy
 pandas
 pydsutils
-
+https://github.com/xinh3ng/pydsutils/blob/master/pydsutils-0.6.0-py2.py3-none-any.whl
 scikit-learn
 opencv-python
 tensorflow
