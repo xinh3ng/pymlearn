@@ -4,7 +4,8 @@ Tutorial:
 http://the-hitchhikers-guide-to-packaging.readthedocs.io/en/latest/quickstart.html
 """
 
-from distutils.core import setup
+# from distutils.core import setup  # This is for sdist
+from setuptools import setup  # This is for bdist_wheel
 import pymlearn
 
 setup(
