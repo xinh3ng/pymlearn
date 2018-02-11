@@ -1,7 +1,7 @@
 numpy
 scipy
 pandas
-https://github.com/xinh3ng/pydsutils/raw/master/packages/pydsutils-0.6.0-py2.py3-none-any.whl
+https://github.com/xinh3ng/pydsutils/raw/master/packages/pydsutils-0.6.1-py2.py3-none-any.whl
 
 scikit-learn
 opencv-python
