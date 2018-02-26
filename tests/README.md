@@ -2,5 +2,5 @@
 
 ### Run your tests please
 ```
-$ python -m unittest -v discover tests/
+$ python3 -m unittest discover -v tests/
 ```

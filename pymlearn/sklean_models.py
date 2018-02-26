@@ -7,20 +7,20 @@ class BaseClassifierRegressor(object):
     """Base classifier / regressor for the entire library
 
     """
-    def __init__(self, label_col, feature_cols, model_params={}, n_cores=1):
-        self.label_col = label_col
-        self.feature_cols = feature_cols
+    def __init__(self, ycol, xcols, model_params={}, n_cores=1):
+        self.ycol = ycol
+        self.xcols = xcols
         self.model_params = model_params
         self.n_cores = n_cores
 
-    def get_label_col(self):
-        return self.label_col
+    def get_ycol(self):
+        return self.ycol
 
-    def get_feature_cols(self):
-        return self.feature_cols
+    def get_xcols(self):
+        return self.xcols
 
-    def set_feature_cols(self, feature_cols):
-        self.feature_cols = feature_cols
+    def set_xcols(self, xcols):
+        self.xcols = xcols
 
     def get_model_params(self):
         return self.model_params
@@ -39,13 +39,13 @@ class BaseClassifierRegressor(object):
 
 
 class EnsembleClassifierRegressor(object):
-    def __init__(self, estimators, label_col, avg_fn=np.mean):
+    def __init__(self, estimators, ycol, avg_fn=np.mean):
         self.estimators = estimators
-        self.label_col = label_col
+        self.ycol = ycol
         self.avg_fn = avg_fn
 
-    def get_label_col(self):
-        return self.label_col
+    def get_ycol(self):
+        return self.ycol
 
     def process_data(self, data):
         return data
@@ -65,8 +65,8 @@ class EnsembleRegressor(EnsembleClassifierRegressor):
     """Ensemble several regressors
 
     """
-    def __init__(self,  estimators, label_col, avg_fn=np.mean):
-        super(EnsembleRegressor, self).__init__(estimators, label_col, avg_fn)
+    def __init__(self,  estimators, ycol, avg_fn=np.mean):
+        super(EnsembleRegressor, self).__init__(estimators, ycol, avg_fn)
 
 
     def predict(self, data):
@@ -81,8 +81,8 @@ class EnsembleClassifier(EnsembleClassifierRegressor):
     """Ensemble several regressors
 
     """
-    def __init__(self,  estimators, label_col, avg_fn=np.mean):
-        super(EnsembleRegressor, self).__init__(estimators, label_col, avg_fn)
+    def __init__(self,  estimators, ycol, avg_fn=np.mean):
+        super(EnsembleRegressor, self).__init__(estimators, ycol, avg_fn)
 
 
     def predict(self, data):
