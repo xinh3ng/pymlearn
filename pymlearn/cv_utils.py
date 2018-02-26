@@ -24,21 +24,23 @@ class CVSplitter(object):
     def split(self, data):
         """Split the data into a series of train and validate sets
 
-        :param data: Data to be split on
-        :return:
+        Args:
+            data: Data to be split on
+
+        Returns:
         """
         kf = KFold(n_splits=self.folds, shuffle=self.shuffle)
-        for train_idx, val_idx in  kf.split(data):
+        for train_idx, test_idx in  kf.split(data):
             yield data.loc[train_idx].reset_index(drop=True),\
-                  data.loc[val_idx].reset_index(drop=True)
+                  data.loc[test_idx].reset_index(drop=True)
 
 
-def train_validate(estimator, train_data, val_data,
-                   perf_score_fn=clf_perf_scores, verbose=False):
+def train_validate(estimator, train_data, test_data,
+                   perf_score_fn=clf_perf_scores, verbose=0):
     estimator = copy.deepcopy(estimator)  # NB xheng: must do this because estimator is mutable
     estimator.fit(train_data, verbose=verbose)
-    y_pred = estimator.predict(val_data)
-    y_true = val_data[estimator.get_label_col()]
+    y_pred = estimator.predict(test_data)
+    y_true = test_data[estimator.get_ycol()]
 
     y = pd.DataFrame.from_dict({
         'true': y_true,
@@ -46,7 +48,7 @@ def train_validate(estimator, train_data, val_data,
     })
     perf_row = perf_score_fn(y['true'], y['pred_cat'])
 
-    if verbose:
+    if verbose >= 1:
         logger.info('Report of out-of-sample performance')
         logger.info(confusion_matrix(y['true'], y['pred_cat']))
         logger.info(classification_report(y['true'], y['pred_cat']))
@@ -54,22 +56,24 @@ def train_validate(estimator, train_data, val_data,
     return y, perf_row
 
 
-def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, verbose=False):
+def cross_validate(data, estimator, cv_splitter, perf_score_fn=clf_perf_scores, verbose=0):
     """Cross validate
 
-    :param estimator:
-    :param data:
-    :param cv_folds:
-    :return:
+    Args:
+        data:
+        estimator:
+        cv_splitter:
+    Returns:
+
     """
     data = estimator.process_data(data)
     performance = pd.DataFrame()  # holds performance metrics from each fold
     fold = 0
-    for train_data, val_data in cv_splitter.split(data):
-        assert len(train_data) >= 3 * len(val_data)
+    for train_data, test_data in cv_splitter.split(data):
+        assert len(train_data) >= 3 * len(test_data)
 
         # 1 row of performance scores
-        _, perf_row = train_validate(estimator, train_data, val_data,
+        _, perf_row = train_validate(estimator, train_data, test_data,
                                      perf_score_fn=perf_score_fn,
                                      verbose=verbose)
         performance = pd.concat([performance, perf_row])
@@ -85,7 +89,7 @@ def cross_validate(estimator, data, cv_splitter, perf_score_fn=clf_perf_scores, 
     for metric in performance.columns:
         sd_perf[metric] = np.std(performance[metric])
 
-    if verbose:
+    if verbose >= 1:
         perf = pd.concat([mean_perf, sd_perf]).reset_index(drop=True)
         logger.info('cross_validate(), performance report: \n%s' % perf.to_string(line_width=144))
 

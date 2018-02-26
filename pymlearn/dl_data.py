@@ -32,7 +32,7 @@ class BaseModelDataValidator(object):
 
 class TfModelDataValidator(BaseModelDataValidator):
     def __init__(self, num_classes, num_rows, num_columns, num_channels):
-        """
+        """Tensorflow model data validation
 
         Args:
             include_top: whether to include the 3 fully-connected layers at the top of the network.
@@ -57,7 +57,7 @@ class TfModelDataValidator(BaseModelDataValidator):
 
 class TorchModelDataValidator(BaseModelDataValidator):
     def __init__(self, num_classes, num_rows, num_columns, num_channels):
-        """
+        """Pytorch model data validation
 
         Args:
             include_top: whether to include the 3 fully-connected layers at the top of the network.
