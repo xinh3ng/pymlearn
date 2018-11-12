@@ -1,25 +1,14 @@
-HOST=127.0.0.1
-TEST_PATH=./
-
-clean-pyc:
-	find . -name '*.pyc' -exec rm --force {} +
-	find . -name '*.pyo' -exec rm --force {} +
-	find . -name '*~' -exec rm --force  {} +
-
-clean-build:
-	rm -rf build/
-	rm -rf dist/
-	rm -rf *.egg-info
-
-clean: clean-pyc clean-build
-
-isort:
-	sh -c "isort --skip-glob=.tox --recursive . "
+install:
+	pip install pipenv
+	pipenv run pip install pip==18.0
+	pipenv install --skip-lock
 
 lint:
-	flake8 --exclude=.tox
+	pipenv run black pymlearn tests -l 120 --py36
 
-test: clean-pyc
-	py.test --verbose --color=yes $(TEST_PATH)
+lint-check:
+	pipenv run black pymlearn tests -l 120 --py36 --check
 
+test:
+	pipenv run pytest -s -v --cov=pymlearn tests --cov-fail-under=5 --disable-pytest-warnings
 

@@ -7,6 +7,7 @@ class BaseClassifierRegressor(object):
     """Base classifier / regressor for the entire library
 
     """
+
     def __init__(self, ycol, xcols, model_params={}, n_cores=1):
         self.ycol = ycol
         self.xcols = xcols
@@ -29,10 +30,10 @@ class BaseClassifierRegressor(object):
         return data
 
     def fit(self, data):
-      raise NotImplementedError('Not implemented')
+        raise NotImplementedError("Not implemented")
 
     def predict(self, data):
-        raise NotImplementedError('Not implemented')
+        raise NotImplementedError("Not implemented")
 
     def summary(self):
         return None
@@ -65,14 +66,14 @@ class EnsembleRegressor(EnsembleClassifierRegressor):
     """Ensemble several regressors
 
     """
-    def __init__(self,  estimators, ycol, avg_fn=np.mean):
-        super(EnsembleRegressor, self).__init__(estimators, ycol, avg_fn)
 
+    def __init__(self, estimators, ycol, avg_fn=np.mean):
+        super(EnsembleRegressor, self).__init__(estimators, ycol, avg_fn)
 
     def predict(self, data):
         pred = pd.DataFrame()
         for estimator in self.estimators:
-            pred = pd.concat(pred[estimator.predict(data)['pred_num']], axis=1)
+            pred = pd.concat(pred[estimator.predict(data)["pred_num"]], axis=1)
         # Tale avg across rows
         self.avg_fn
 
@@ -81,13 +82,13 @@ class EnsembleClassifier(EnsembleClassifierRegressor):
     """Ensemble several regressors
 
     """
-    def __init__(self,  estimators, ycol, avg_fn=np.mean):
-        super(EnsembleRegressor, self).__init__(estimators, ycol, avg_fn)
 
+    def __init__(self, estimators, ycol, avg_fn=np.mean):
+        super(EnsembleRegressor, self).__init__(estimators, ycol, avg_fn)
 
     def predict(self, data):
         pred = pd.DataFrame()
         for estimator in self.estimators:
-            pred = pd.concat(pred[estimator.predict(data)['pred_num']], axis=1)
+            pred = pd.concat(pred[estimator.predict(data)["pred_num"]], axis=1)
         # Tale avg across rows
         self.avg_fn
