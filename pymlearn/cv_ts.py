@@ -23,19 +23,16 @@ class TimeSeriesSplitter(object):
         """
         data.reset_index(drop=True, inplace=True)
         length = len(data)
-        assert length >= self.train_size + self.n_ahead, 'Data size is too small'
+        assert length >= self.train_size + self.n_ahead, "Data size is too small"
 
         # Rolling window type of data splitting
         for idx in range(self.train_size, length - self.n_ahead + 1):
             train_rows = range(idx - self.train_size, idx)
             test_rows = range(idx, idx + self.n_ahead)
-            yield data.loc[train_rows, :], \
-                  data.loc[test_rows, :]
+            yield data.loc[train_rows, :], data.loc[test_rows, :]
 
 
-def ts_cross_validate(data, estimator, cv_splitter,
-                      perf_score_fn=lambda x: 1,
-                      verbose=0):
+def ts_cross_validate(data, estimator, cv_splitter, perf_score_fn=lambda x: 1, verbose=0):
     """Cross validate for time series models
 
     Args:
@@ -56,18 +53,16 @@ def ts_cross_validate(data, estimator, cv_splitter,
         y_pred = estimator.predict(test_data)
         y_true = test_data[estimator.get_ycol()]
 
-        y = pd.concat([y, pd.DataFrame.from_dict({
-            'n_ahead': range(1, 1 + len(test_data)),
-            'true': y_true,
-            'pred': y_pred})
-                       ])
+        y = pd.concat(
+            [y, pd.DataFrame.from_dict({"n_ahead": range(1, 1 + len(test_data)), "true": y_true, "pred": y_pred})]
+        )
     if verbose >= 1:
         logger.info("Showing first 10 rows: \n%s" % y.head(10).to_string(line_width=120))
 
     # Measure performance
     performance = pd.DataFrame()
-    for n_ahead, y in y.groupby('n_ahead'):
-        df = perf_score_fn(y['true'], y['pred'])
-        df['n_ahead'] = n_ahead
+    for n_ahead, y in y.groupby("n_ahead"):
+        df = perf_score_fn(y["true"], y["pred"])
+        df["n_ahead"] = n_ahead
         performance = pd.concat([performance, df])
     return performance

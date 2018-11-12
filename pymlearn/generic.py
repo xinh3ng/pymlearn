@@ -5,13 +5,15 @@ from pdb import set_trace as debug
 import logging
 
 
-def create_logger(name,
-                  level='info',
-                  fmt='%(asctime)s %(levelname)s %(name)s: %(message)s',
-                  datefmt='%y-%m-%d %H:%M:%S',
-                  add_console_handler=True,
-                  add_file_handler=False,
-                  logfile='/tmp/tmp.log'):
+def create_logger(
+    name,
+    level="info",
+    fmt="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    datefmt="%y-%m-%d %H:%M:%S",
+    add_console_handler=True,
+    add_file_handler=False,
+    logfile="/tmp/tmp.log",
+):
     """Create a formatted logger at module level
 
     Args:
@@ -22,10 +24,7 @@ def create_logger(name,
         logger = create_logger(__name__, level='info')
         logger.info('Hello world')
     """
-    level = {
-        'debug': logging.DEBUG, 'info': logging.INFO,
-        'warn': logging.WARN, 'error': logging.ERROR
-    }[level]
+    level = {"debug": logging.DEBUG, "info": logging.INFO, "warn": logging.WARN, "error": logging.ERROR}[level]
 
     logger = logging.getLogger(name)
     logger.setLevel(level)

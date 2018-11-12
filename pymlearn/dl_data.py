@@ -10,6 +10,7 @@ class BaseModelDataValidator(object):
     """Validator of Model Data
 
     """
+
     def __init__(self, num_classes, num_rows, num_columns, num_channels):
         self.num_classes = num_classes
         self.num_rows = num_rows
@@ -24,10 +25,9 @@ class BaseModelDataValidator(object):
         reasons = []
         if y.shape[1] != self.num_classes:
             is_valid = False
-            reasons.append('input y.shape[1] does not match requirements')
+            reasons.append("input y.shape[1] does not match requirements")
 
-        return {'is_valid': is_valid,
-                'reasons': reasons}
+        return {"is_valid": is_valid, "reasons": reasons}
 
 
 class TfModelDataValidator(BaseModelDataValidator):
@@ -49,10 +49,9 @@ class TfModelDataValidator(BaseModelDataValidator):
         reasons = []
         if X.shape[1:] != (self.num_rows, self.num_columns, self.num_channels):
             is_valid = False
-            reasons.append('input X[1:] shape does not match requirements')
+            reasons.append("input X[1:] shape does not match requirements")
 
-        return {'is_valid': is_valid,
-                'reasons': reasons}
+        return {"is_valid": is_valid, "reasons": reasons}
 
 
 class TorchModelDataValidator(BaseModelDataValidator):
@@ -74,11 +73,9 @@ class TorchModelDataValidator(BaseModelDataValidator):
         reasons = []
         if X.shape[1:] != (self.num_columns, self.num_channels, self.num_rows):
             is_valid = False
-            reasons.append('input X[1:] shape does not match requirements')
+            reasons.append("input X[1:] shape does not match requirements")
 
         if (X.max() != 1) or (X.min() != 0):
             is_valid = False
-            reasons.append('X is not scaled to [0, 1]')
-        return {'is_valid': is_valid,
-                'reasons': reasons}
-
+            reasons.append("X is not scaled to [0, 1]")
+        return {"is_valid": is_valid, "reasons": reasons}

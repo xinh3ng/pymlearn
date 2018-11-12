@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+black = "*"
+keras = "*"
+numpy = "*"
+opencv-python = "*"
+pandas = "*"
+pydsutils = {editable = true, ref = "master", git = "https://github.com/district24x7/pydsutils.git"}
+pytest = "*"
+pytest-cov = "*"
+scikit-learn = "*"
+scipy = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"
