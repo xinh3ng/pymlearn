@@ -11,10 +11,6 @@ from sklearn.metrics import (
     fbeta_score,
 )
 
-from pydsutils.generic import create_logger
-
-logger = create_logger(__name__, level="info")
-
 
 def regression_perf_scores(
     y_true: np.ndarray, y_pred: np.ndarray, metrics: List[str] = ["mae", "mean_error", "median_absolute_error", "rmse"]
